@@ -102,8 +102,8 @@
   </div>
 </div>
 
-<script>
-  // منع اختيار تاريخ قديم
+
+  <script>
   const today = new Date().toISOString().split("T")[0];
   document.getElementById("date").setAttribute("min", today);
 
@@ -113,13 +113,11 @@
     const date = document.getElementById("date").value;
     const doctor = document.getElementById("doctor").value;
 
-    // تحقق من الحقول
     if (!name || !phone || !date) {
       alert("⚠️ يرجى ملء جميع الحقول");
       return;
     }
 
-    // تحقق من رقم الهاتف (11 رقم فقط)
     if (!/^\d{11}$/.test(phone)) {
       alert("❌ رقم الهاتف يجب أن يكون 11 رقم فقط");
       return;
@@ -127,6 +125,9 @@
 
     fetch("https://script.google.com/macros/s/AKfycbyDmgQI4qpsr9Ukz7QMLH-DhuzZ75L_ZgEdSBs6o740VA5Ts6r2f3TWEYWvc8CTRBRK/exec", {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
       body: JSON.stringify({
         doctor_id: doctor,
         patient_name: name,
@@ -134,8 +135,24 @@
         date: date
       })
     })
-    .then(r => r.json())
-    .then(() => alert("✅ تم إرسال الحجز بنجاح"));
+    .then(res => res.json())
+    .then(data => {
+      if (data.status === "success") {
+        alert("✅ تم الحجز بنجاح");
+
+        // ✅ تفريغ الحقول بعد الحجز
+        document.getElementById("name").value = "";
+        document.getElementById("phone").value = "";
+        document.getElementById("date").value = "";
+        document.getElementById("doctor").selectedIndex = 0;
+
+      } else {
+        alert("❌ " + data.message);
+      }
+    })
+    .catch(() => {
+      alert("❌ فشل الاتصال بالسيرفر");
+    });
   }
 </script>
 
