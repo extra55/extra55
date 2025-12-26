@@ -13,6 +13,57 @@
   <p class="msg" id="msg"></p>
 </div>
 
+  <style>
+body {
+  font-family: Arial, sans-serif;
+  background: #f4f6f9;
+  margin: 0;
+}
+
+.container {
+  max-width: 400px;
+  margin: 80px auto;
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0,0,0,.1);
+}
+
+h2 {
+  text-align: center;
+  color: #0d6efd;
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  background: #0d6efd;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #084298;
+}
+
+.msg {
+  text-align: center;
+  margin-top: 10px;
+}
+
+</style>
+
 <script>
 const API = "PUT_SCRIPT_URL_HERE";
 const phone = localStorage.getItem("phone");
