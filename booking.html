@@ -4,26 +4,38 @@
   <meta charset="UTF-8">
   <title>حجز موعد</title>
   <link rel="stylesheet" href="style.css">
+
+  <!-- حماية الصفحة -->
+  <script>
+    if (localStorage.getItem("loggedIn") !== "true") {
+      window.location.href = "auth.html";
+    }
+  </script>
 </head>
 <body>
 
 <div class="container">
   <h2>حجز موعد طبي</h2>
 
+  <label>الطبيب</label>
   <select id="doctor">
     <option value="">اختر الطبيب</option>
-    <option value="1">د. أحمد – باطنية</option>
-    <option value="2">د. علي – أسنان</option>
-    <option value="3">د. سارة – نسائية</option>
+    <option value="د. أحمد – باطنية">د. أحمد – باطنية</option>
+    <option value="د. علي – أسنان">د. علي – أسنان</option>
+    <option value="د. سارة – نسائية">د. سارة – نسائية</option>
   </select>
 
-  
+  <label>اسم المريض</label>
   <input type="text" id="name" placeholder="اسم المريض">
+
+  <label>تاريخ الحجز</label>
   <input type="date" id="date">
 
   <button onclick="book()">تأكيد الحجز</button>
 
   <p class="msg" id="msg"></p>
+
+  <button class="logout" onclick="logout()">تسجيل خروج</button>
 </div>
 
 <style>
@@ -34,23 +46,29 @@ body {
 }
 
 .container {
-  max-width: 400px;
+  max-width: 420px;
   margin: 80px auto;
   background: white;
   padding: 30px;
-  border-radius: 10px;
-  box-shadow: 0 0 15px rgba(0,0,0,.1);
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0,0,0,.1);
 }
 
 h2 {
   text-align: center;
   color: #0d6efd;
+  margin-bottom: 20px;
 }
 
-input {
+label {
+  font-size: 14px;
+  color: #555;
+}
+
+input, select {
   width: 100%;
   padding: 12px;
-  margin: 10px 0;
+  margin: 8px 0 15px;
   border-radius: 6px;
   border: 1px solid #ccc;
 }
@@ -70,29 +88,38 @@ button:hover {
   background: #084298;
 }
 
+.logout {
+  margin-top: 15px;
+  background: #6c757d;
+}
+
+.logout:hover {
+  background: #495057;
+}
+
 .msg {
   text-align: center;
   margin-top: 10px;
 }
-
 </style>
 
 <script>
 const API = "PUT_SCRIPT_URL_HERE";
 const phone = localStorage.getItem("phone");
 
-if (!phone) {
-  alert("يجب تسجيل الدخول أولاً");
-  location.href = "signup.html";
-}
+// منع اختيار تواريخ قديمة
+const dateInput = document.getElementById("date");
+const today = new Date().toISOString().split("T")[0];
+dateInput.min = today;
 
 function book() {
   const doctor = document.getElementById("doctor").value;
-  const date   = document.getElementById("date").value;
-  const name   = document.getElementById("name").value;
+  const date   = dateInput.value;
+  const name   = document.getElementById("name").value.trim();
+  const msg    = document.getElementById("msg");
 
   if (!doctor || !date || !name) {
-    document.getElementById("msg").innerText = "يرجى ملء جميع الحقول";
+    msg.innerText = "❌ يرجى ملء جميع الحقول";
     return;
   }
 
@@ -101,7 +128,7 @@ function book() {
     headers: {"Content-Type":"application/json"},
     body: JSON.stringify({
       action: "booking",
-      doctor_id: doctor,
+      doctor: doctor,
       patient_name: name,
       phone: phone,
       date: date
@@ -109,14 +136,22 @@ function book() {
   })
   .then(r => r.json())
   .then(d => {
-    document.getElementById("msg").innerText = d.message;
+    msg.innerText = d.message;
+
     if (d.status === "success") {
       document.getElementById("name").value = "";
+      document.getElementById("doctor").value = "";
+      dateInput.value = "";
     }
   })
   .catch(() => {
-    document.getElementById("msg").innerText = "فشل الاتصال بالسيرفر";
+    msg.innerText = "⚠️ فشل الاتصال بالسيرفر";
   });
+}
+
+function logout() {
+  localStorage.clear();
+  window.location.href = "auth.html";
 }
 </script>
 
