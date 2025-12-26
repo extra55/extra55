@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>تأكيد الرمز</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+  <h2>تأكيد الرمز</h2>
+  <input type="text" id="otp" placeholder="رمز التحقق">
+  <button onclick="verifyOTP()">تأكيد</button>
+  <p class="msg" id="msg"></p>
+</div>
+
+<script>
+const API = "PUT_SCRIPT_URL_HERE";
+const phone = localStorage.getItem("phone");
+
+function verifyOTP() {
+  const otp = document.getElementById("otp").value;
+
+  fetch(API, {
+    method: "POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify({
+      action: "verify_otp",
+      phone: phone,
+      otp: otp
+    })
+  })
+  .then(r => r.json())
+  .then(d => {
+    document.getElementById("msg").innerText = d.message;
+    if (d.status === "success") {
+      location.href = "dashboard.html";
+    }
+  });
+}
+</script>
+
+</body>
+</html>
