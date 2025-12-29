@@ -2,38 +2,43 @@ body {
   font-family: Arial, sans-serif;
   background: #f4f6f9;
   margin: 0;
+  padding: 0;
 }
 
 .container {
-  max-width: 400px;
-  margin: 80px auto;
+  max-width: 420px;
+  width: 90%;
+  margin: 40px auto;
   background: white;
-  padding: 30px;
-  border-radius: 10px;
+  padding: 20px;
+  border-radius: 12px;
   box-shadow: 0 0 15px rgba(0,0,0,.1);
 }
 
 h2 {
   text-align: center;
   color: #0d6efd;
+  margin-bottom: 15px;
 }
 
-input {
+input,
+select {
   width: 100%;
-  padding: 12px;
+  padding: 14px;
   margin: 10px 0;
-  border-radius: 6px;
+  border-radius: 8px;
   border: 1px solid #ccc;
+  font-size: 16px; /* مهم للموبايل */
 }
 
 button {
   width: 100%;
-  padding: 12px;
+  padding: 14px;
   background: #0d6efd;
   color: white;
   border: none;
-  border-radius: 6px;
-  font-size: 16px;
+  border-radius: 8px;
+  font-size: 17px;
   cursor: pointer;
 }
 
@@ -44,4 +49,5 @@ button:hover {
 .msg {
   text-align: center;
   margin-top: 10px;
+  font-size: 14px;
 }
