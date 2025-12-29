@@ -2,16 +2,13 @@
 <html lang="ar">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>حجز موعد</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
 <div class="container">
   <h2>حجز موعد طبي</h2>
-
   <label>اسم المريض</label>
   <input type="text" id="name" placeholder="اكتب اسمك الكامل">
 
@@ -31,7 +28,6 @@
 
   <p class="msg" id="msg"></p>
 </div>
-
 <style>
 .logout-btn {
   background: #dc3545;
@@ -105,7 +101,6 @@ button:hover {
   margin-top: 10px;
 }
 </style>
-
 <script>
 if (!localStorage.getItem("loggedIn")) {
   window.location.replace("auth.html");
