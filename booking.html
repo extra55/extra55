@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
 <div class="container">
   <h2>حجز موعد طبي</h2>
 
@@ -34,20 +35,6 @@
 
   <p class="msg" id="msg"></p>
 </div>
-
-<style>
-.logout-btn {
-  background: #dc3545;
-  color: white;
-  border: none;
-  padding: 8px 15px;
-  border-radius: 6px;
-  cursor: pointer;
-  float: left;
-  margin-bottom: 10px;
-}
-.logout-btn:hover { background: #bb2d3b; }
-</style>
 
 <style>
 body {
@@ -85,33 +72,30 @@ button {
 }
 button:hover { background: #084298; }
 .msg { text-align: center; margin-top: 10px; }
+
+.logout-btn {
+  background: #dc3545;
+}
+.logout-btn:hover {
+  background: #bb2d3b;
+}
 </style>
 
 <script>
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbybbTIOW7O3bsiRI3DYwm1Ra_QQkh6GhuRL_NNUIuwP9G24z7E6q__Z8RPbfxaSYXlA/exec";
+
+// فحص الصيانة
 fetch(SCRIPT_URL).then(r=>r.json()).then(d=>{
   if(d.maintenance==="ON") window.location.replace("maintenance.html");
 });
-</script>
 
-<script>
+// تحقق تسجيل الدخول
 if (!localStorage.getItem("loggedIn")) {
   window.location.replace("auth.html");
 }
 
 const API   = SCRIPT_URL;
 const phone = localStorage.getItem("phone");
-
-const doctorsByCity = {
-  "بغداد": [
-    "د. أحمد – باطنية",
-    "د. علي – أسنان"
-  ],
-  "ذي قار": [
-    "د. سارة – نسائية",
-    "د. حسن – أطفال"
-  ]
-};
 
 // تحميل المحافظة المحفوظة
 const savedCity = localStorage.getItem("city");
@@ -124,7 +108,6 @@ if (savedCity) {
    🔒 تقييد الحجز لأسبوع واحد فقط
 ================================ */
 const dateInput = document.getElementById("date");
-
 const today = new Date();
 const maxDate = new Date();
 maxDate.setDate(today.getDate() + 7);
@@ -133,24 +116,35 @@ dateInput.min = today.toISOString().split("T")[0];
 dateInput.max = maxDate.toISOString().split("T")[0];
 /* =============================== */
 
+// جلب الأطباء من Google Sheets
 function updateDoctors() {
   const city   = document.getElementById("city").value;
   const doctor = document.getElementById("doctor");
 
   doctor.innerHTML = '<option value="">-- اختر الطبيب --</option>';
-
   if (!city) return;
 
   localStorage.setItem("city", city);
 
-  doctorsByCity[city].forEach(d => {
-    const opt = document.createElement("option");
-    opt.value = d;
-    opt.textContent = d;
-    doctor.appendChild(opt);
-  });
+  const fd = new FormData();
+  fd.append("action", "get_doctors");
+  fd.append("city", city);
+
+  fetch(API, { method: "POST", body: fd })
+    .then(r => r.json())
+    .then(d => {
+      if (d.status !== "success") return;
+
+      d.doctors.forEach(name => {
+        const opt = document.createElement("option");
+        opt.value = name;
+        opt.textContent = name;
+        doctor.appendChild(opt);
+      });
+    });
 }
 
+// تسجيل الخروج
 function confirmLogout() {
   if (confirm("هل أنت متأكد من تسجيل الخروج؟")) {
     localStorage.clear();
@@ -158,6 +152,7 @@ function confirmLogout() {
   }
 }
 
+// إرسال الحجز
 function book() {
   const city   = document.getElementById("city").value;
   const doctor = document.getElementById("doctor").value;
@@ -190,7 +185,7 @@ function book() {
         document.getElementById("date").value = "";
       }
     })
-    .catch(()=> msg.innerText="فشل الاتصال بالسيرفر");
+    .catch(() => msg.innerText = "فشل الاتصال بالسيرفر");
 }
 </script>
 
