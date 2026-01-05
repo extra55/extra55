@@ -9,15 +9,21 @@
 <body>
 <div class="container">
   <h2>حجز موعد طبي</h2>
+
+  <!-- المحافظة -->
+  <label>اختر المحافظة</label>
+  <select id="city" onchange="updateDoctors()">
+    <option value="">-- اختر المحافظة --</option>
+    <option value="بغداد">بغداد</option>
+    <option value="ذي قار">ذي قار</option>
+  </select>
+
   <label>اسم المريض</label>
   <input type="text" id="name" placeholder="اكتب اسمك الكامل">
 
   <label>اختر الطبيب</label>
   <select id="doctor">
     <option value="">-- اختر الطبيب --</option>
-    <option value="د. أحمد – باطنية">د. أحمد – باطنية</option>
-    <option value="د. علي – أسنان">د. علي – أسنان</option>
-    <option value="د. سارة – نسائية">د. سارة – نسائية</option>
   </select>
 
   <label>تاريخ / موعد الحجز</label>
@@ -28,6 +34,7 @@
 
   <p class="msg" id="msg"></p>
 </div>
+
 <style>
 .logout-btn {
   background: #dc3545;
@@ -39,10 +46,7 @@
   float: left;
   margin-bottom: 10px;
 }
-
-.logout-btn:hover {
-  background: #bb2d3b;
-}
+.logout-btn:hover { background: #bb2d3b; }
 </style>
 
 <style>
@@ -51,7 +55,6 @@ body {
   background: #f4f6f9;
   margin: 0;
 }
-
 .container {
   max-width: 400px;
   margin: 80px auto;
@@ -60,18 +63,8 @@ body {
   border-radius: 10px;
   box-shadow: 0 0 15px rgba(0,0,0,.1);
 }
-
-h2 {
-  text-align: center;
-  color: #0d6efd;
-}
-
-label {
-  display: block;
-  margin-top: 10px;
-  font-weight: bold;
-}
-
+h2 { text-align: center; color: #0d6efd; }
+label { display: block; margin-top: 10px; font-weight: bold; }
 input, select {
   width: 100%;
   padding: 12px;
@@ -79,7 +72,6 @@ input, select {
   border-radius: 6px;
   border: 1px solid #ccc;
 }
-
 button {
   width: 100%;
   padding: 12px;
@@ -91,70 +83,74 @@ button {
   font-size: 16px;
   cursor: pointer;
 }
-
-button:hover {
-  background: #084298;
-}
-
-.msg {
-  text-align: center;
-  margin-top: 10px;
-}
+button:hover { background: #084298; }
+.msg { text-align: center; margin-top: 10px; }
 </style>
-  <!-- كود سكريبت خاص بصفحة الصيانة -->
-  <script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwlWAgLLunVWJdtwn08erokBU9Cr-QpL1kx8pnqejUdxbu3eQcz4Y74OF_2UVsI0OW_/exec";
 
-fetch(SCRIPT_URL)
-  .then(res => res.json())
-  .then(data => {
-    if (data.maintenance === "ON") {
-      window.location.replace("maintenance.html");
-    }
-  })
-  .catch(err => {
-    console.error("Maintenance check failed", err);
-  });
+<script>
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwlWAgLLunVWJdtwn08erokBU9Cr-QpL1kx8pnqejUdxbu3eQcz4Y74OF_2UVsI0OW_/exec";
+fetch(SCRIPT_URL).then(r=>r.json()).then(d=>{
+  if(d.maintenance==="ON") window.location.replace("maintenance.html");
+});
 </script>
+
 <script>
 if (!localStorage.getItem("loggedIn")) {
   window.location.replace("auth.html");
 }
 
-  
-// منع الرجوع للصفحة بعد تسجيل الخروج
-window.addEventListener("pageshow", function () {
-  if (!localStorage.getItem("loggedIn")) {
-    window.location.replace("auth.html");
-  }
-});
+const API   = SCRIPT_URL;
+const phone = localStorage.getItem("phone");
 
-  
+const doctorsByCity = {
+  "بغداد": [
+    "د. أحمد – باطنية",
+    "د. علي – أسنان"
+  ],
+  "ذي قار": [
+    "د. سارة – نسائية",
+    "د. حسن – أطفال"
+  ]
+};
+
+// تحميل المحافظة المحفوظة
+const savedCity = localStorage.getItem("city");
+if (savedCity) {
+  document.getElementById("city").value = savedCity;
+  updateDoctors();
+}
+
+// منع تاريخ قديم
+document.getElementById("date").min =
+  new Date().toISOString().split("T")[0];
+
+function updateDoctors() {
+  const city   = document.getElementById("city").value;
+  const doctor = document.getElementById("doctor");
+
+  doctor.innerHTML = '<option value="">-- اختر الطبيب --</option>';
+
+  if (!city) return;
+
+  localStorage.setItem("city", city);
+
+  doctorsByCity[city].forEach(d => {
+    const opt = document.createElement("option");
+    opt.value = d;
+    opt.textContent = d;
+    doctor.appendChild(opt);
+  });
+}
+
 function confirmLogout() {
-  const ok = confirm("هل أنت متأكد من تسجيل الخروج؟");
-
-  if (ok) {
-    localStorage.removeItem("loggedIn");
-    localStorage.removeItem("phone");
+  if (confirm("هل أنت متأكد من تسجيل الخروج؟")) {
+    localStorage.clear();
     window.location.href = "index.html";
   }
 }
 
-  
-const API = "https://script.google.com/macros/s/AKfycbwlWAgLLunVWJdtwn08erokBU9Cr-QpL1kx8pnqejUdxbu3eQcz4Y74OF_2UVsI0OW_/exec";
-const phone = localStorage.getItem("phone");
-
-// حماية الصفحة
-if (!localStorage.getItem("loggedIn")) {
-  alert("يجب تسجيل الدخول أولاً");
-  window.location.href = "auth.html";
-}
-
-// منع اختيار تاريخ قديم
-const today = new Date().toISOString().split("T")[0];
-document.getElementById("date").setAttribute("min", today);
-
 function book() {
+  const city   = document.getElementById("city").value;
   const doctor = document.getElementById("doctor").value;
   const name   = document.getElementById("name").value;
   const date   = document.getElementById("date").value;
@@ -162,39 +158,30 @@ function book() {
 
   msg.innerText = "";
 
-  if (!doctor || !name || !date) {
+  if (!city || !doctor || !name || !date) {
     msg.innerText = "يرجى ملء جميع الحقول";
     return;
   }
 
-  const formData = new FormData();
-  formData.append("action", "booking");
-  formData.append("doctor_id", doctor); // الآن اسم الطبيب
-  formData.append("patient_name", name);
-  formData.append("phone", phone);
-  formData.append("date", date);
+  const fd = new FormData();
+  fd.append("action", "booking");
+  fd.append("city", city);          // ➜ العمود F
+  fd.append("doctor_id", doctor);
+  fd.append("patient_name", name);
+  fd.append("phone", phone);
+  fd.append("date", date);
 
-  fetch(API, {
-    method: "POST",
-    body: formData
-  })
-  .then(r => r.text())
-  .then(t => {
-    console.log("RAW:", t);
-    const data = JSON.parse(t);
-
-    msg.innerText = data.message;
-
-    if (data.status === "success") {
-      // مسح الحقول بعد النجاح
-      document.getElementById("doctor").value = "";
-      document.getElementById("name").value = "";
-      document.getElementById("date").value = "";
-    }
-  })
-  .catch(() => {
-    msg.innerText = "فشل الاتصال بالسيرفر";
-  });
+  fetch(API, { method: "POST", body: fd })
+    .then(r => r.json())
+    .then(d => {
+      msg.innerText = d.message;
+      if (d.status === "success") {
+        document.getElementById("name").value = "";
+        document.getElementById("doctor").value = "";
+        document.getElementById("date").value = "";
+      }
+    })
+    .catch(()=> msg.innerText="فشل الاتصال بالسيرفر");
 }
 </script>
 
