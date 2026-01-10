@@ -34,9 +34,9 @@
   <label>تاريخ / موعد الحجز</label>
   <input type="date" id="date">
 
-  <button onclick="book()">تأكيد الحجز</button>
   <button class="home-btn" onclick="goHome()">🏠 الرئيسية</button>
-
+  <button onclick="book()">تأكيد الحجز</button>
+  
   <p class="msg" id="msg"></p>
 </div>
 
@@ -227,6 +227,13 @@ function book() {
       }
     })
     .catch(() => msg.innerText = "فشل الاتصال بالسيرفر");
+}
+</script>
+
+  <!-- كود خاص بزر الصفحة الرئيسية -->
+  <script>
+function goHome() {
+  window.location.href = "index.html";
 }
 </script>
 
