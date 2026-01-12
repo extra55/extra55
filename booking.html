@@ -107,6 +107,13 @@ const API = SCRIPT_URL;
 const phone = localStorage.getItem("phone");
 let allDoctors = [];
 
+  // تثبيت المحافظة
+const savedCity = localStorage.getItem("city");
+if (savedCity) {
+  city.value = savedCity;
+  updateDoctors();
+}
+
 /* ===== فحص الصيانة ===== */
 fetch(SCRIPT_URL)
   .then(r => r.json())
