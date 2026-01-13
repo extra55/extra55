@@ -102,7 +102,7 @@ button:hover { background: #084298; }
 </style>
 
 <script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz_U_dwY2FRi4EPVf-iszDE3rQVj0oqHJqdmbdWWjjxPRA1U2QxXqX9DkVUIYmPBorG/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbypENV_qyW5q-4BrJDQBrm4852O-ska4uIjGmW-An8A8lZPraEswCSMpUL2ANr2tjUX/exec";
 const API = SCRIPT_URL;
 const phone = localStorage.getItem("phone");
 let allDoctors = [];
@@ -126,6 +126,27 @@ fetch(SCRIPT_URL)
 /* ===== حماية الصفحة ===== */
 if (!localStorage.getItem("loggedIn")) {
   window.location.replace("auth.html");
+}
+
+  /* ===== حضر المتطفلين ===== */
+  // 🔐 فحص الحظر
+const phone = localStorage.getItem("phone");
+
+if (phone) {
+  const fd = new FormData();
+  fd.append("action", "check_ban");
+  fd.append("phone", phone);
+
+  fetch(API, { method: "POST", body: fd })
+    .then(r => r.json())
+    .then(d => {
+      if (d.banned) {
+        // تسجيل خروج إجباري
+        localStorage.clear();
+        alert("تم حظرك من استخدام الموقع");
+        window.location.replace("auth.html");
+      }
+    });
 }
 
 /* ===== تقييد الحجز لأسبوع ===== */
