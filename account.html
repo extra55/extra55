@@ -1,3 +1,14 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>حسابي </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
 <h2>حسابي</h2>
 
 <label>رقم الهاتف</label>
@@ -13,6 +24,7 @@
 <h3>حجوزاتي السابقة</h3>
 <ul id="bookings"></ul>
 
+ </div> 
 <script>
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxzkCyA7V3fcAZqT87mVLeGqFe5mi3XjQIMwIr3jA5OC0fhdsAlCvZZ-wiAFlg653v8/exec";
 const API = SCRIPT_URL;
@@ -63,3 +75,7 @@ fetch(API,{
 });
 </script>
 
+<!-- ربط ملف الحماية -->
+<script src="auth-guard.js"></script>
+</body>
+</html>  
