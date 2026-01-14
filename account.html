@@ -12,3 +12,53 @@
 
 <h3>حجوزاتي السابقة</h3>
 <ul id="bookings"></ul>
+
+<script>
+const API = SCRIPT_URL;
+const phone = localStorage.getItem("phone");
+
+if (!phone) location.href="auth.html";
+
+// جلب بيانات المستخدم
+fetch(API,{
+  method:"POST",
+  body:new URLSearchParams({
+    action:"get_user",
+    phone:phone
+  })
+})
+.then(r=>r.json())
+.then(d=>{
+  document.getElementById("phone").value = d.phone;
+  document.getElementById("name").value = d.name;
+});
+
+// حفظ الاسم
+function saveName(){
+  fetch(API,{
+    method:"POST",
+    body:new URLSearchParams({
+      action:"update_user",
+      phone:phone,
+      name:document.getElementById("name").value
+    })
+  }).then(()=>alert("تم الحفظ"));
+}
+
+// جلب الحجوزات
+fetch(API,{
+  method:"POST",
+  body:new URLSearchParams({
+    action:"get_my_bookings",
+    phone:phone
+  })
+})
+.then(r=>r.json())
+.then(d=>{
+  const ul = document.getElementById("bookings");
+  d.bookings.forEach(b=>{
+    ul.innerHTML += `<li>${b.date} - ${b.doctor} (${b.city})</li>`;
+  });
+});
+</script>
+
