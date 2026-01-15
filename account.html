@@ -70,7 +70,7 @@ fetch(API,{
 .then(d=>{
   const ul = document.getElementById("bookings");
   d.bookings.forEach(b=>{
-    ul.innerHTML += `<li>${b.date} - ${b.time} - ${b.doctor} (${b.city})</li>`;
+    ul.innerHTML += `<li>${b.date} - ${b.doctor} (${b.city})</li>`;
   });
 });
 </script>
