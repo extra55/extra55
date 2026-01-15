@@ -128,6 +128,26 @@
   
 </head>
 <body>
+  <!-- شريط علوي -->
+<div id="topBar" style="
+  position: fixed;
+  top: 10px;
+  right: 15px;
+  display: none;
+  gap: 15px;
+  z-index: 9999;
+">
+  <!-- أيقونة الحساب -->
+  <span onclick="goAccount()" title="حسابي" style="cursor:pointer;font-size:22px;">
+    👤
+  </span>
+
+  <!-- أيقونة تسجيل الخروج -->
+  <span onclick="logout()" title="تسجيل الخروج" style="cursor:pointer;font-size:22px;">
+    🚪
+  </span>
+</div>
+
 
 <header>
   <h1>🏥 MyClinic</h1>
@@ -281,8 +301,36 @@ document.querySelectorAll(".faq-question").forEach(btn => {
   });
 });
 </script>
+  
+<script>
+  //كود خاص بعمل ايقونة تسجيل الخروج وحسابي
+  function goAccount() {
+  window.location.href = "account.html";
+}
+
+function logout() {
+  localStorage.removeItem("phone");
+  localStorage.removeItem("logged_in");
+
+  document.getElementById("topBar").style.display = "none";
+
+  // إذا تحب ترجع المستخدم لبداية الصفحة
+  location.reload();
+}
+
+  // اظهار (ايقونة تسجيل الخروج وايقونة حسابي) عند تسجيل الدخول
+  window.onload = function () {
+  const logged = localStorage.getItem("logged_in");
+
+  if (logged === "yes") {
+    document.getElementById("topBar").style.display = "flex";
+  } else {
+    document.getElementById("topBar").style.display = "none";
+  }
+</script>
 </body>
 </html>
+
 
 
 
