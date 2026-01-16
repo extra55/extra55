@@ -292,26 +292,6 @@
   © 2026 MyClinic - جميع الحقوق محفوظة
 </footer>
 
-  <!-- كود سكريبت خاص بإخفاء وإظهار زر تسجيل الخروج -->
-<script>
-const logoutBtn = document.getElementById
-
-("logoutBtn");
-
-if (localStorage.getItem("loggedIn")) {
-  logoutBtn.style.display = "inline-block";
-} else {
-  logoutBtn.style.display = "none";
-}
-
-function confirmLogout() {
-  if (confirm("هل أنت متأكد من تسجيل الخروج؟")) {
-    localStorage.clear();
-    window.location.href = "index.html";
-  }
-}
-</script>
-
 <!-- كود سكريبت خاص بزر الدعم -->
 <script>
 function openSupport() {
@@ -408,6 +388,7 @@ document.addEventListener("DOMContentLoaded", function () {
 </script>
 </body>
 </html>
+
 
 
 
