@@ -328,11 +328,8 @@ document.querySelectorAll(".faq-question").forEach(btn => {
 </script>
 
   <!-- كود سكريبت خاص بالقائمة الجانبية -->
-  <script>
-/* ===== القائمة الجانبية ===== */
-
-/* متغير لمنع إعادة تسجيل الدخول بعد الخروج */
-let isLoggingOut = false;
+ <script>
+/* ===== القائمة الجانبية (النسخة النهائية المستقرة) ===== */
 
 /* فتح / إغلاق القائمة */
 function toggleMenu() {
@@ -340,12 +337,10 @@ function toggleMenu() {
   const overlay = document.getElementById("menuOverlay");
 
   menu.classList.toggle("open");
-  overlay.style.display = menu.classList.contains("open")
-    ? "block"
-    : "none";
+  overlay.style.display = menu.classList.contains("open") ? "block" : "none";
 }
 
-/* الذهاب إلى الحساب */
+/* الانتقال إلى صفحة الحساب */
 function goAccount() {
   window.location.href = "account.html";
 }
@@ -354,24 +349,24 @@ function goAccount() {
 function logout() {
   if (!confirm("هل أنت متأكد من تسجيل الخروج؟")) return;
 
-  isLoggingOut = true;
-
+  // حذف بيانات الجلسة (المعيار الحقيقي)
   localStorage.removeItem("phone");
   localStorage.removeItem("logged_in");
 
-  document.getElementById("menuBtn").style.display = "none";
-
+  // إغلاق القائمة
   document.getElementById("sideMenu").classList.remove("open");
   document.getElementById("menuOverlay").style.display = "none";
+  document.getElementById("menuBtn").style.display = "none";
 
-  location.reload();
+  // تحويل مباشر لصفحة تسجيل الدخول
+  window.location.href = "auth.html";
 }
 
-/* التحكم في ظهور زر القائمة */
-window.addEventListener("load", function () {
+/* إظهار زر ☰ فقط إذا المستخدم مسجل دخول */
+window.addEventListener("DOMContentLoaded", function () {
   const menuBtn = document.getElementById("menuBtn");
 
-  if (localStorage.getItem("logged_in") === "yes") {
+  if (localStorage.getItem("phone")) {
     menuBtn.style.display = "block";
   } else {
     menuBtn.style.display = "none";
@@ -380,4 +375,5 @@ window.addEventListener("load", function () {
 </script>
 </body>
 </html>
+
 
