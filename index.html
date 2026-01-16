@@ -49,22 +49,6 @@
       color: #777;
     }
   </style>
-  
-  <!-- كود خاص بزر تسجيل الخروج -->
-  <style>
-    #logoutBtn {
-      background: #dc3545;
-      color: white;
-      border: none;
-      padding: 10px 18px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 14px;
-    }
-    #logoutBtn:hover {
-      background: #bb2d3b;
-    }
-  </style>
 
   <!-- كود خاص بزر الدعم -->
   <style>
@@ -200,7 +184,7 @@
   <div class="menu-header">القائمة</div>
 
   <div class="menu-item" onclick="goAccount()">👤 حسابي</div>
-  <div class="menu-item" onclick="logout()">🚪 تسجيل الخروج</div>
+  
 </div>
 
 <!-- خلفية عند فتح القائمة -->
@@ -291,26 +275,6 @@
 <footer>
   © 2026 MyClinic - جميع الحقوق محفوظة
 </footer>
-
-  <!-- كود سكريبت خاص بإخفاء وإظهار زر تسجيل الخروج -->
-<script>
-const logoutBtn = document.getElementById
-
-("logoutBtn");
-
-if (localStorage.getItem("loggedIn")) {
-  logoutBtn.style.display = "inline-block";
-} else {
-  logoutBtn.style.display = "none";
-}
-
-function confirmLogout() {
-  if (confirm("هل أنت متأكد من تسجيل الخروج؟")) {
-    localStorage.clear();
-    window.location.href = "index.html";
-  }
-}
-</script>
   
 <!-- كود سكريبت خاص بزر الدعم -->
 <script>
@@ -408,6 +372,7 @@ document.addEventListener("DOMContentLoaded", function () {
 </script>
 </body>
 </html>
+
 
 
 
