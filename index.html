@@ -125,9 +125,86 @@
   border-top: 1px solid #eee;
 }
    </style>
+
+  <!-- كود خاص بالقائمة الجانبية -->
+   <style>
+     /* زر ☰ */
+#menuBtn {
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  font-size: 26px;
+  cursor: pointer;
+  z-index: 1001;
+  display: none;
+}
+
+/* القائمة */
+#sideMenu {
+  position: fixed;
+  top: 0;
+  right: -260px;
+  width: 260px;
+  height: 100%;
+  background: #fff;
+  box-shadow: -2px 0 10px rgba(0,0,0,0.15);
+  transition: right 0.3s ease;
+  z-index: 1002;
+}
+
+/* رأس القائمة */
+.menu-header {
+  padding: 20px;
+  font-weight: bold;
+  border-bottom: 1px solid #eee;
+  text-align: center;
+}
+
+/* عناصر القائمة */
+.menu-item {
+  padding: 15px 20px;
+  cursor: pointer;
+  border-bottom: 1px solid #f1f1f1;
+}
+
+.menu-item:hover {
+  background: #f5f5f5;
+}
+
+/* الخلفية */
+#menuOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.3);
+  display: none;
+  z-index: 1000;
+}
+
+/* فتح القائمة */
+#sideMenu.open {
+  right: 0;
+}
+   </style>
   
 </head>
 <body>
+  <!--  القائمة الجانبية -->
+  <!-- زر القائمة -->
+<div id="menuBtn" onclick="toggleMenu()">☰</div>
+
+<!-- القائمة الجانبية -->
+<div id="sideMenu">
+  <div class="menu-header">القائمة</div>
+
+  <div class="menu-item" onclick="goAccount()">👤 حسابي</div>
+  <div class="menu-item" onclick="logout()">🚪 تسجيل الخروج</div>
+</div>
+
+<!-- خلفية عند فتح القائمة -->
+<div id="menuOverlay" onclick="toggleMenu()"></div>
   
 <header>
   <h1>🏥 MyClinic</h1>
@@ -262,6 +339,7 @@ fetch(SCRIPT_URL)
     console.error("Maintenance check failed", err);
   });
 </script>
+  
 <!-- كود سكريبت خاص بألاسئلة الشائعة -->
   <script>
 document.querySelectorAll(".faq-question").forEach(btn => {
@@ -281,5 +359,38 @@ document.querySelectorAll(".faq-question").forEach(btn => {
   });
 });
 </script>
+
+  <!-- كود سكريبت خاص بالقائمة الجانبية -->
+  <script>
+    function toggleMenu() {
+  document.getElementById("sideMenu").classList.toggle("open");
+  document.getElementById("menuOverlay").style.display =
+    document.getElementById("sideMenu").classList.contains("open")
+      ? "block"
+      : "none";
+}
+
+function goAccount() {
+  window.location.href = "account.html";
+}
+
+function logout() {
+  localStorage.removeItem("phone");
+  localStorage.removeItem("logged_in");
+
+  document.getElementById("menuBtn").style.display = "none";
+  toggleMenu();
+
+  location.reload();
+}
+
+/* إظهار القائمة فقط عند تسجيل الدخول */
+window.onload = function () {
+  if (localStorage.getItem("logged_in") === "yes") {
+    document.getElementById("menuBtn").style.display = "block";
+  }
+};
+  </script>
 </body>
 </html>
+
