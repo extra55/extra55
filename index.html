@@ -330,15 +330,12 @@ document.querySelectorAll(".faq-question").forEach(btn => {
   <script>
 /* ===== القائمة الجانبية ===== */
 
-const menuBtn = document.getElementById("menuBtn");
-const sideMenu = document.getElementById("sideMenu");
-const menuOverlay = document.getElementById("menuOverlay");
-
-function toggleMenu() {
-  sideMenu.classList.toggle("open");
-  menuOverlay.style.display = sideMenu.classList.contains("open")
-    ? "block"
-    : "none";
+    function toggleMenu() {
+  document.getElementById("sideMenu").classList.toggle("open");
+  document.getElementById("menuOverlay").style.display =
+    document.getElementById("sideMenu").classList.contains("open")
+      ? "block"
+      : "none";
 }
 
 function goAccount() {
@@ -346,14 +343,21 @@ function goAccount() {
 }
 
 function logout() {
-  if (!confirm("هل أنت متأكد من تسجيل الخروج؟")) return;
-
-  localStorage.removeItem("logged_in");
   localStorage.removeItem("phone");
+  localStorage.removeItem("logged_in");
 
-  sideMenu.classList.remove("open");
-  menuOverlay.style.display = "none";
-  menuBtn.style.display = "
+  document.getElementById("menuBtn").style.display = "none";
+  toggleMenu();
+
+  location.reload();
+}
+
+/* إظهار القائمة فقط عند تسجيل الدخول */
+window.onload = function () {
+  if (localStorage.getItem("logged_in") === "yes") {
+    document.getElementById("menuBtn").style.display = "block";
+  }
+};
 </script>
 
   <!-- كود سكريبت مؤقت نحذفه عندما نربط الصفحة بصفحة تسجيل الدخول -->
@@ -362,4 +366,5 @@ localStorage.setItem("logged_in", "yes");
 </script>
 </body>
 </html>
+
 
