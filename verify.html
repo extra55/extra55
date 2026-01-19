@@ -28,14 +28,21 @@ fetch(API)
     if (d.maintenance === "ON") {
       window.location.replace("maintenance.html");
     }
-  });
+  })
+  .catch(() => {});
 
 /* ================== حماية الصفحة ================== */
 const phone = localStorage.getItem("phone");
 
+/* إذا لا يوجد رقم هاتف → طرده */
 if (!phone) {
   alert("يجب إدخال رقم الهاتف أولاً");
   window.location.replace("auth.html");
+}
+
+/* إذا كان متحقق مسبقاً → لا يعيد التحقق */
+if (localStorage.getItem("auth_verified") === "yes") {
+  window.location.replace("booking.html");
 }
 
 /* ================== التحقق من الرمز ================== */
@@ -61,7 +68,10 @@ function verifyOTP() {
       msg.innerText = d.message;
 
       if (d.status === "success") {
-        // ✅ الدخول يتم هنا فقط
+        /* ✅ ختم التحقق الحقيقي */
+        localStorage.setItem("auth_verified", "yes");
+
+        /* الدخول بعد التحقق فقط */
         window.location.replace("booking.html");
       }
     })
@@ -70,6 +80,5 @@ function verifyOTP() {
     });
 }
 </script>
-
 </body>
 </html>
