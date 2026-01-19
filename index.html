@@ -313,6 +313,18 @@
   © 2026 MyClinic - جميع الحقوق محفوظة
 </footer>
   
+<!-- كود سكريبت تجريبي للاختبار -->
+  <script>
+const isLoggedIn = localStorage.getItem("auth_verified") === "yes";
+
+document.addEventListener("DOMContentLoaded", () => {
+  const bookBtn = document.getElementById("bookBtn");
+  if (bookBtn) {
+    bookBtn.style.display = isLoggedIn ? "block" : "none";
+  }
+});
+</script>
+
 <!-- كود سكريبت خاص بزر الدعم -->
 <script>
 function openSupport() {
@@ -439,3 +451,4 @@ window.addEventListener("load", () => {
 </script>
 </body>
 </html>
+
