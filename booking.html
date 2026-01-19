@@ -102,16 +102,6 @@ button:hover { background: #084298; }
 }
 </style>
 
-  <script>
-/* ===== حماية صفحة الحجز ===== */
-const verified = localStorage.getItem("auth_verified");
-const phone = localStorage.getItem("phone");
-
-if (verified !== "yes" || !phone) {
-  window.location.replace("auth.html");
-}
-</script>
-
 <script>
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxzkCyA7V3fcAZqT87mVLeGqFe5mi3XjQIMwIr3jA5OC0fhdsAlCvZZ-wiAFlg653v8/exec";
 const API = SCRIPT_URL;
