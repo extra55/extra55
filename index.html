@@ -314,6 +314,21 @@
 </footer>
 
   <script>
+/* ===== حماية من الدخول بدون OTP ===== */
+const verified = localStorage.getItem("auth_verified");
+const pending = localStorage.getItem("pending_phone");
+
+// إذا كان هناك رقم بانتظار التحقق → لا تسجيل دخول
+if (pending && verified !== "yes") {
+  // تنظيف أي حالة خاطئة
+  localStorage.removeItem("phone");
+  localStorage.removeItem("logged_in");
+}
+
+// لا تعتبر المستخدم مسجل دخول إلا إذا verified = yes
+</script>
+
+  <script>
 const verified = localStorage.getItem("auth_verified");
 
 if (verified !== "yes") {
@@ -449,6 +464,7 @@ window.addEventListener("load", () => {
 </script>
 </body>
 </html>
+
 
 
 
