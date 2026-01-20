@@ -314,10 +314,12 @@
 </footer>
 
   <script>
-const pendingPhone = localStorage.getItem("pending_phone");
+const verified = localStorage.getItem("auth_verified");
 
-if (!pendingPhone) {
-  window.location.replace("auth.html");
+if (verified !== "yes") {
+  // مستخدم زائر
+} else {
+  // مستخدم موثّق
 }
 </script>
 
@@ -447,6 +449,7 @@ window.addEventListener("load", () => {
 </script>
 </body>
 </html>
+
 
 
 
