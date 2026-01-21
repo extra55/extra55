@@ -11,7 +11,7 @@
 <div class="container">
   <h2>تأكيد الرمز</h2>
 
-  <input type="text" id="otp" placeholder="أدخل رمز التحقق (6 أرقام)">
+  <input type="text" id="otp" placeholder="أدخل رمز التحقق ">
   <button onclick="verifyOTP()">تأكيد</button>
 
   <p class="msg" id="msg"></p>
@@ -33,15 +33,15 @@ fetch(API)
 
 /* ================== حماية verify.html ================== */
 
-/* الرقم المؤقت فقط */
+/* الرقم المؤقت */
 const pendingPhone = localStorage.getItem("pending_phone");
 
-/* إذا ماكو رقم مؤقت → طرده */
+/* إذا ماكو رقم → رجوع */
 if (!pendingPhone) {
   window.location.replace("auth.html");
 }
 
-/* إذا كان متحقق مسبقاً → لا يسمح بالرجوع */
+/* إذا متحقق مسبقاً → لا يرجع */
 if (localStorage.getItem("auth_verified") === "yes") {
   window.location.replace("index.html");
 }
@@ -49,7 +49,42 @@ if (localStorage.getItem("auth_verified") === "yes") {
 /* ================== التحقق من الرمز ================== */
 function verifyOTP() {
   const otp = document.getElementById("otp").value.trim();
-  const msg
- 
+  const msg = document.getElementById("msg");
+
+  msg.innerText = "";
+
+  if (!/^\d{6}$/.test(otp)) {
+    msg.innerText = "رمز التحقق يجب أن يكون 6 أرقام";
+    return;
+  }
+
+  const fd = new FormData();
+  fd.append("action", "verify_otp");
+  fd.append("phone", pendingPhone);
+  fd.append("otp", otp);
+
+  fetch(API, {
+    method: "POST",
+    body: fd
+  })
+    .then(r => r.json())
+    .then(d => {
+      msg.innerText = d.message;
+
+      if (d.status === "success") {
+        /* 🔒 تحويل الجلسة إلى مؤكدة */
+        localStorage.setItem("phone", pendingPhone);
+        localStorage.setItem("auth_verified", "yes");
+        localStorage.removeItem("pending_phone");
+
+        /* دخول نهائي */
+        window.location.replace("index.html");
+      }
+    })
+    .catch(() => {
+      msg.innerText = "فشل الاتصال بالسيرفر";
+    });
+}
+</script> 
 </body>
 </html>
