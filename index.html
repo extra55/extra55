@@ -341,15 +341,6 @@
   © 2026 MyClinic - جميع الحقوق محفوظة
 </footer>
 
-  <!-- كود خاص بتسجيل الخروج -->
-  <div id="logoutModal" class="modal">
-  <div class="modal-box">
-    <p>هل أنت متأكد من تسجيل الخروج؟</p>
-    <button onclick="confirmLogout()">نعم</button>
-    <button onclick="closeLogoutModal()">إلغاء</button>
-  </div>
-</div>
-
   <script>
 /* ===== حماية من الدخول بدون OTP ===== */
 const verified = localStorage.getItem("auth_verified");
@@ -514,6 +505,15 @@ function confirmLogout() {
 }
 </script>
 
+   <!-- كود خاص بتسجيل الخروج -->
+  <div id="logoutModal" class="modal">
+  <div class="modal-box">
+    <p>هل أنت متأكد من تسجيل الخروج؟</p>
+    <button onclick="confirmLogout()">نعم</button>
+    <button onclick="closeLogoutModal()">إلغاء</button>
+  </div>
+</div>
 </body>
 </html>
+
 
