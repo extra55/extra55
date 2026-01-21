@@ -444,18 +444,6 @@ function goAccount() {
 }
 
 /* تسجيل الخروج */
-function openLogoutModal() {
-  document.getElementById("logoutModal").style.display = "flex";
-}
-
-function closeLogoutModal() {
-  document.getElementById("logoutModal").style.display = "none";
-}
-
-function confirmLogout() {
-  localStorage.clear();
-  window.location.replace("auth.html");
-}
    
   // حذف بيانات الجلسة (المعيار الحقيقي)
   localStorage.removeItem("phone");
@@ -509,5 +497,23 @@ window.addEventListener("load", () => {
   }
 });
 </script>
+
+  <!-- كود سكريبت خاص بتسجيل الخروج -->
+  <script>
+function openLogoutModal() {
+  document.getElementById("logoutModal").style.display = "flex";
+}
+
+function closeLogoutModal() {
+  document.getElementById("logoutModal").style.display = "none";
+}
+
+function confirmLogout() {
+  localStorage.clear();
+  window.location.replace("auth.html");
+}
+</script>
+
 </body>
 </html>
+
