@@ -418,7 +418,22 @@ document.querySelectorAll(".faq-question").forEach(btn => {
 
   <!-- كود سكريبت خاص بالقائمة الجانبية -->
  <script>
-/* ===== القائمة الجانبية (النسخة النهائية المستقرة) ===== */
+/* ===== القائمة الجانبية (نسخة مستقرة نهائية) ===== */
+
+document.addEventListener("DOMContentLoaded", () => {
+  const menuBtn = document.getElementById("menuBtn");
+  const sideMenu = document.getElementById("sideMenu");
+  const overlay = document.getElementById("menuOverlay");
+
+  // إظهار القائمة فقط إذا المستخدم مسجل دخول
+  if (localStorage.getItem("phone")) {
+    menuBtn.style.display = "block";
+  } else {
+    menuBtn.style.display = "none";
+    sideMenu.classList.remove("open");
+    overlay.style.display = "none";
+  }
+});
 
 /* فتح / إغلاق القائمة */
 function toggleMenu() {
@@ -426,39 +441,26 @@ function toggleMenu() {
   const overlay = document.getElementById("menuOverlay");
 
   menu.classList.toggle("open");
-  overlay.style.display = menu.classList.contains("open") ? "block" : "none";
+  overlay.style.display = menu.classList.contains("open")
+    ? "block"
+    : "none";
 }
 
-/* الانتقال إلى صفحة الحساب */
+/* الذهاب للحساب */
 function goAccount() {
   window.location.href = "account.html";
 }
 
-/* تسجيل الخروج */
-   
-  // حذف بيانات الجلسة (المعيار الحقيقي)
-  localStorage.removeItem("phone");
-  localStorage.removeItem("logged_in");
+/* تسجيل الخروج (يستدعى من المودال) */
+function confirmLogout() {
+  localStorage.clear();
 
-  // إغلاق القائمة
   document.getElementById("sideMenu").classList.remove("open");
   document.getElementById("menuOverlay").style.display = "none";
   document.getElementById("menuBtn").style.display = "none";
 
-  // تحويل مباشر لصفحة تسجيل الدخول
-  window.location.href = "auth.html";
+  window.location.replace("auth.html");
 }
-
-/* إظهار زر ☰ فقط إذا المستخدم مسجل دخول */
-window.addEventListener("DOMContentLoaded", function () {
-  const menuBtn = document.getElementById("menuBtn");
-
-  if (localStorage.getItem("phone")) {
-    menuBtn.style.display = "block";
-  } else {
-    menuBtn.style.display = "none";
-  }
-});
 </script>
 
   <!-- كود سكريبت خاص بزر تسجيل الدخول وزر حجز الطبيب -->
@@ -515,5 +517,6 @@ function confirmLogout() {
 </div>
 </body>
 </html>
+
 
 
